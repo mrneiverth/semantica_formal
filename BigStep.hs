@@ -69,47 +69,6 @@ bbigStep (Leq e1 e2, s) = let (n1,s1) = abigStep(e1,s);
 							(n2,s2) = abigStep(e2,s)
 							in (n1 <= n2, s)
 
--- abigStep :: (AExp,Estado) -> (Int,Estado)
--- abigStep (Var x,s) = (procuraVar s x,s)
--- abigStep (Num n,s) = (n,s)
--- abigStep (Som e1 e2,s)  = let	(n1,s1) = abigStep (e1, s)
--- 				(n2,s2) = abigStep (e2, s)
--- 					in (n1+n2,s)
-
---[implmentacao de sub e mul]
---sub
--- abigStep (Sub e1 e2,s)  = let 	(n1,s1) = abigStep(e1, s)
--- 				(n2,s2) = abigStep (e2, s)
--- 					in (n1-n2,s)
---mul
--- abigStep (Mul e1 e2,s)  = let 	(n1,s1) = abigStep(e1, s)
--- 				(n2,s2) = abigStep (e2, s)
--- 					in (n1*n2,s)
---[/implmentacao de sub e mul]
-
-
--- bbigStep :: (BExp,Estado) -> (Bool,Estado)
--- bbigStep (TRUE,s)  	= (True,s)
--- bbigStep (FALSE,s) 	= (False,s)
--- bbigStep (Not b,s) = case bbigStep (b,s) of
--- 		(True,_) -> (False, s)
---                 (False,_) -> (True, s)
-
---[implmentacao de ig and e or]
---ig
--- bbigStep (Ig e1 e2,s ) = let	(b1, s1) = abigStep(e1, s)
--- 				(b2, s2) = abigStep(e2, s)
--- 					in(b1==b2, s)
---and
--- bbigStep (And b1 b2,s )  = let	(n1, s1) = bbigStep(b1, s)
--- 				(n2, s2) = bbigStep(b2, s)
--- 					in(n1 && n2, s)
--- --or
--- bbigStep (Or b1 b2,s )  = let	(n1, s1) = bbigStep(b1, s)
--- 				(n2, s2) = bbigStep(b2, s)
--- 					in(n1 || n2, s)
---[/implmentacao de ig and e or]
-
 cbigStep :: (CExp,Estado) -> (CExp,Estado)
 cbigStep (Skip,s) = (Skip,s)
 
@@ -152,21 +111,6 @@ cbigStep(Swap (Var x) (Var y), s) = (Skip, mudaVar (mudaVar s x (procuraVar s y)
 --doubleAtrib
 cbigStep(DuplaAtrib (Var x) (Var y) e1 e2, s)= cbigStep(Seq (Atrib (Var x) e1)
                                                 (Atrib (Var y) e2), s)
-
-fatorial :: CExp
-fatorial = (Seq (Atrib (Var "y") (Num 1))
-               (While (Not (Ig (Var "x") (Num 1)))
-                      (Seq (Atrib (Var "y") (Mul (Var "y") (Var "x")))
-                           (Atrib (Var "x") (Sub (Var "x") (Num 1))))))
-
--- -- função incrementa
--- exIncrementa :: CExp
--- exIncrementa = Atrib (Var "x") (Som (Var "x")(Num 1))
---
--- -- do while
--- exDoWhile :: CExp
--- exDoWhile = DoWhile exIncrementa (Leq (Var "x")(Num 6))
-
 
 --------------------------testes------------------------------
 
