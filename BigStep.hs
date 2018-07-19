@@ -125,23 +125,23 @@ cbigStep (Seq c1 c2,s)  = let	(com1, s1) = cbigStep (c1, s)
 --Atrib
 cbigStep (Atrib (Var x) e,s) = let	(n1,s1) = abigStep(e,s)
 					(s2)	= (mudaVar s1 x n1)
-						in (cbigStep(Skip, s2))
+						in (Skip, s2)
 --While
 cbigStep (While b c, s) = case bbigStep(b,s) of
 			(True, _) -> cbigStep(Seq (c) (While b c), s)
-			(False, _) -> cbigStep(Skip, s)
+			(False, _) -> (Skip, s)
 --[/implmentacao de if, seq, atrib, while]
 --Repeat
 cbigStep (Repeat c b, s) = let	(c1, s1) = cbigStep(c,s)
 				in(case bbigStep(b, s1) of
-				(True, _) -> cbigStep(Skip, s1)
+				(True, _) -> (Skip, s1)
 				(False, _) -> cbigStep(Repeat c b, s1))
 
---do
+--do while
 cbigStep(Do c b, s) = let (c1, s1) = cbigStep(c,s)
                         in(case bbigStep(b,s1) of
                           (True,_) -> cbigStep(Do c b, s1)
-                          (False,_)-> cbigStep(Skip, s1))
+                          (False,_)-> (Skip,s1))
 --for
 cbigStep (For (Var x) e1 e2 c,s) = cbigStep(Seq
 					(Atrib (Var x) e1)
